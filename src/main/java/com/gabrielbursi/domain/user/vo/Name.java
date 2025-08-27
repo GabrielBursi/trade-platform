@@ -3,7 +3,7 @@ package com.gabrielbursi.domain.user.vo;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-public class Name {
+public final class Name {
 
     public final static int MIN_LEGTH = 2;
     public final static int MAX_LEGTH = 100;
