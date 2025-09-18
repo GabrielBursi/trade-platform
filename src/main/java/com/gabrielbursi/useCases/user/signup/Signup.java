@@ -10,6 +10,6 @@ public class Signup {
                 input.email(),
                 input.cpf(),
                 input.password());
-        return new OutputSignup(user.getId());
+        return new OutputSignup(user.getId().getValue());
     }
 }

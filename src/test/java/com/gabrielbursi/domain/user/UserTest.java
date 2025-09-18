@@ -1,11 +1,8 @@
 package com.gabrielbursi.domain.user;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +10,7 @@ import com.gabrielbursi.domain.user.vo.Cpf;
 import com.gabrielbursi.domain.user.vo.Email;
 import com.gabrielbursi.domain.user.vo.Name;
 import com.gabrielbursi.domain.user.vo.Password;
+import com.gabrielbursi.domain.user.vo.UserId;
 
 public class UserTest {
 
@@ -22,7 +20,6 @@ public class UserTest {
                 TestUserUtils.createValidPlainPassoword());
 
         assertNotNull(user.getId());
-        assertDoesNotThrow(() -> UUID.fromString(user.getId()));
         assertEquals("Gabriel", user.getFirstName().getValue());
         assertEquals("Bursi", user.getLastName().getValue());
         assertEquals("gabriel@email.com", user.getEmail().getValue());
@@ -32,7 +29,7 @@ public class UserTest {
 
     @Test
     void shouldRehydrateUserUsingBuilder() {
-        String id = UUID.randomUUID().toString();
+        UserId id = UserId.newId();
         Name firstName = Name.of("Gabriel");
         Name lastName = Name.of("Bursi");
         Email email = Email.of("gabriel@email.com");
@@ -65,7 +62,7 @@ public class UserTest {
 
     @Test
     void usersWithSameIdShouldBeEqual() {
-        String id = UUID.randomUUID().toString();
+        UserId id = UserId.newId();
         User user1 = User.builder()
                 .id(id)
                 .firstName(Name.of("Gabriel"))
