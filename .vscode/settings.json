@@ -4,6 +4,7 @@
         "deps",
         "user",
         "asset",
-        "deposit"
+        "deposit",
+        "withdraw"
     ]
 }
