@@ -42,7 +42,7 @@ public class UserTest {
                 Email email = Email.of("gabriel@email.com");
                 Cpf cpf = TestUserUtils.createValidCpf();
                 Password password = Password.fromPlain(TestUserUtils.createValidPlainPassoword());
-                Map<AssetId, UserAsset> assets = Map.of(AssetId.of("BTC"),
+                Map<AssetId, UserAsset> assets = Map.of(AssetId.btc(),
                                 UserAsset.create(id, "BTC", BigDecimal.TEN));
 
                 User user = User.builder()
@@ -123,7 +123,7 @@ public class UserTest {
                 User user = TestUserUtils.createValidUser();
                 user.deposit("BTC", BigDecimal.TEN);
 
-                assertTrue(user.getAssets().containsKey(AssetId.of("BTC")));
+                assertTrue(user.getAssets().containsKey(AssetId.btc()));
                 assertEquals(0, user.getBalance("BTC").compareTo(BigDecimal.TEN));
         }
 
@@ -169,7 +169,7 @@ public class UserTest {
         void shouldReturnTotalBalance() {
                 User user = TestUserUtils.createValidUser();
                 user.deposit("BTC", BigDecimal.valueOf(3));
-                user.deposit("ETH", BigDecimal.valueOf(7));
+                user.deposit("USD", BigDecimal.valueOf(7));
                 assertEquals(0, user.getTotalBalance().compareTo(BigDecimal.TEN));
         }
 
@@ -179,7 +179,7 @@ public class UserTest {
                 user.deposit("BTC", BigDecimal.ONE);
 
                 Map<AssetId, UserAsset> assets = user.getAssets();
-                assertThrows(UnsupportedOperationException.class, () -> assets.put(AssetId.of("ETH"),
-                                UserAsset.create(UserId.newId(), "ETH", BigDecimal.ONE)));
+                assertThrows(UnsupportedOperationException.class, () -> assets.put(AssetId.usd(),
+                                UserAsset.create(UserId.newId(), "USD", BigDecimal.ONE)));
         }
 }

@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import com.gabrielbursi.domain.user.vo.AssetId;
 import com.gabrielbursi.domain.user.vo.Quantity;
-import com.gabrielbursi.domain.user.vo.TestAssetIdUtils;
 import com.gabrielbursi.domain.user.vo.UserId;
 
 public class UserAssetTest {
@@ -20,7 +19,7 @@ public class UserAssetTest {
     @Test
     void shouldCreateUserAssetWithValidValues() {
         UserId userId = UserId.newId();
-        String asset = TestAssetIdUtils.createValidAssetId().getValue();
+        String asset = AssetId.btc().getValue();
         BigDecimal quantity = BigDecimal.valueOf(2.5);
 
         UserAsset userAsset = UserAsset.create(userId, asset, quantity);
@@ -34,7 +33,7 @@ public class UserAssetTest {
     @Test
     void shouldThrowExceptionWhenUserIdIsNull() {
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new UserAsset(null, AssetId.of(TestAssetIdUtils.createValidAssetId().getValue()), Quantity.of(1)));
+                () -> new UserAsset(null, AssetId.btc(), Quantity.of(1)));
         assertEquals("UserId cannot be null", exception.getMessage());
     }
 
@@ -50,14 +49,14 @@ public class UserAssetTest {
     void shouldThrowExceptionWhenQuantityIsNull() {
         UserId userId = UserId.newId();
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new UserAsset(userId, AssetId.of(TestAssetIdUtils.createValidAssetId().getValue()), null));
+                () -> new UserAsset(userId, AssetId.btc(), null));
         assertEquals("Quantity cannot be null", exception.getMessage());
     }
 
     @Test
     void shouldUpdateQuantityImmutably() {
         UserId userId = UserId.newId();
-        UserAsset userAsset = UserAsset.create(userId, TestAssetIdUtils.createValidAssetId().getValue(), BigDecimal.valueOf(2));
+        UserAsset userAsset = UserAsset.create(userId, AssetId.btc().getValue(), BigDecimal.valueOf(2));
 
         UserAsset updated = userAsset.withUpdatedQuantity(Quantity.of(5));
 
@@ -72,8 +71,8 @@ public class UserAssetTest {
     void equalsAndHashCodeShouldWorkBasedOnUserIdAndAssetId() {
         UserId userId1 = UserId.newId();
         UserId userId2 = UserId.newId();
-        AssetId asset1 = AssetId.of(TestAssetIdUtils.createValidAssetId().getValue());
-        AssetId asset2 = AssetId.of("ETH");
+        AssetId asset1 = AssetId.btc();
+        AssetId asset2 = AssetId.usd();
 
         UserAsset ua1 = new UserAsset(userId1, asset1, Quantity.of(1));
         UserAsset ua2 = new UserAsset(userId1, asset1, Quantity.of(10));

@@ -12,9 +12,13 @@ class AssetIdTest {
 
     @Test
     void shouldCreateValidAssetId() {
-        AssetId assetId = TestAssetIdUtils.createValidAssetId();
-        assertEquals(TestAssetIdUtils.createValidAssetId().getValue(), assetId.getValue());
-        assertEquals(TestAssetIdUtils.createValidAssetId().getValue(), assetId.toString());
+        AssetId btc = AssetId.btc();
+        assertEquals("BTC", btc.getValue());
+        assertEquals("BTC", btc.toString());
+
+        AssetId usd = AssetId.usd();
+        assertEquals("USD", usd.getValue());
+        assertEquals("USD", usd.toString());
     }
 
     @Test
@@ -37,24 +41,25 @@ class AssetIdTest {
 
     @Test
     void shouldThrowExceptionWhenInvalidFormat() {
-        assertThrows(IllegalArgumentException.class, () -> AssetId.of("btc"));
-        assertThrows(IllegalArgumentException.class, () -> AssetId.of("BT"));
-        assertThrows(IllegalArgumentException.class, () -> AssetId.of("BITCOIN12345"));
-        assertThrows(IllegalArgumentException.class, () -> AssetId.of("BTC$"));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> AssetId.of("btc"));
+        assertEquals("Invalid AssetId. Only BTC and USD are supported.", exception.getMessage());
+        
+        exception = assertThrows(IllegalArgumentException.class, () -> AssetId.of("ETH"));
+        assertEquals("Invalid AssetId. Only BTC and USD are supported.", exception.getMessage());
     }
 
     @Test
     void shouldBeEqualWhenSameValue() {
-        AssetId asset1 = TestAssetIdUtils.createValidAssetId();
-        AssetId asset2 = TestAssetIdUtils.createValidAssetId();
+        AssetId asset1 = AssetId.btc();
+        AssetId asset2 = AssetId.btc();
         assertEquals(asset1, asset2);
         assertTrue(asset1.sameAs(asset2));
     }
 
     @Test
     void shouldNotBeEqualWhenDifferentValue() {
-        AssetId asset1 = TestAssetIdUtils.createValidAssetId();
-        AssetId asset2 = AssetId.of("ETH");
+        AssetId asset1 = AssetId.btc();
+        AssetId asset2 = AssetId.usd();
         assertNotEquals(asset1, asset2);
         assertFalse(asset1.sameAs(asset2));
     }
