@@ -32,7 +32,7 @@ public class User {
     private final Map<AssetId, UserAsset> assets = new HashMap<>();
 
     /**
-     * Usado principalmente para reidratar um User a partir de dados persistidos
+     * Mainly used to rehydrate a User from persisted data.
      */
     @Builder
     public User(UserId id, Name firstName, Name lastName, Email email, Cpf cpf, Password password,
@@ -48,8 +48,8 @@ public class User {
     }
 
     /**
-     * Cria um novo User a partir de dados crus (plain text).
-     * Gera novo UUID e encripta a senha.
+     * Creates a new User from raw (plain text) data.
+     * Generates a new UUID and encrypts the password.
      */
     public static User create(String firstName, String lastName, String email, String cpf, String password) {
         return new User(
@@ -62,6 +62,11 @@ public class User {
                 Map.of());
     }
 
+    /**
+     * Deposits a quantity of an asset to the user's account.
+     * <p>
+     * If the asset does not exist, it will be created.
+     */
     public void deposit(String assetId, BigDecimal quantity) {
         assets.merge(
                 AssetId.of(assetId),
@@ -70,6 +75,13 @@ public class User {
                         .withUpdatedQuantity(oldAsset.getQuantity().add(newAsset.getQuantity())));
     }
 
+    /**
+     * Withdraws a quantity of an asset from the user's account.
+     * <p>
+     * Throws an exception if the asset does not exist or if the balance is
+     * insufficient.
+     *
+     */
     public void withdraw(String assetId, BigDecimal quantity) {
         Quantity q = Quantity.of(quantity);
         UserAsset asset = assets.get(AssetId.of(assetId));
@@ -93,6 +105,9 @@ public class User {
         return firstName + " " + lastName;
     }
 
+    /**
+     * Returns an unmodifiable view of the user's assets.
+     */
     public Map<AssetId, UserAsset> getAssets() {
         return Collections.unmodifiableMap(assets);
     }

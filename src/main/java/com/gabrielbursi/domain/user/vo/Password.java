@@ -25,8 +25,8 @@ public final class Password {
     }
 
     /**
-     * Cria um Password a partir de uma senha crua (plain text).
-     * Valida a força da senha e a encripta.
+     * Creates a Password from a raw (plain text) string.
+     * Validates the password strength and encrypts it.
      */
     public static Password fromPlain(String plainPassword) {
         validatePlainPassword(plainPassword);
@@ -35,7 +35,7 @@ public final class Password {
     }
 
     /**
-     * Reconstrói um Password a partir de um hash já existente (ex: vindo do banco).
+     * Rebuilds a Password from an existing hash (e.g., loaded from the database).
      */
     public static Password fromHash(String hash) {
         return new Password(hash);
@@ -46,7 +46,7 @@ public final class Password {
     }
 
     /**
-     * Verifica se a senha em texto puro bate com o hash armazenado.
+     * Verifies whether the plain text password matches the stored hash.
      */
     public boolean matches(String plainPassword) {
         return BCrypt.checkpw(plainPassword, this.hash);
