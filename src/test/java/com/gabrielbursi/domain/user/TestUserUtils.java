@@ -10,4 +10,8 @@ public class TestUserUtils {
     public static String createValidPlainPassoword() {
         return "Senha123";
     }
+
+    public static User createValidUser() {
+        return User.create("junit", "java", "java@email.com", createValidCpf().getValue(), createValidPlainPassoword());
+    }
 }
