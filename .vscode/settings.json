@@ -3,6 +3,7 @@
     "conventionalCommits.scopes": [
         "deps",
         "user",
-        "asset"
+        "asset",
+        "deposit"
     ]
 }
