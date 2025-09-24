@@ -101,6 +101,12 @@ public class User {
                 .getValue();
     }
 
+    public BigDecimal getTotalBalance() {
+        return assets.values().stream()
+                .map(asset -> asset.getQuantity().getValue())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     public String getFullName() {
         return firstName + " " + lastName;
     }

@@ -166,6 +166,14 @@ public class UserTest {
         }
 
         @Test
+        void shouldReturnTotalBalance() {
+                User user = TestUserUtils.createValidUser();
+                user.deposit("BTC", BigDecimal.valueOf(3));
+                user.deposit("ETH", BigDecimal.valueOf(7));
+                assertEquals(0, user.getTotalBalance().compareTo(BigDecimal.TEN));
+        }
+
+        @Test
         void shouldReturnUnmodifiableAssetsMap() {
                 User user = TestUserUtils.createValidUser();
                 user.deposit("BTC", BigDecimal.ONE);
