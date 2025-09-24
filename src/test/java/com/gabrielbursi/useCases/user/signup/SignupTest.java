@@ -12,7 +12,7 @@ import com.gabrielbursi.domain.user.TestUserUtils;
 public class SignupTest {
     @Test
     void shouldReturnUserIdWhenSignupUser() {
-        var signup = new Signup();
+        var signup = new SignupUseCase();
         var input = new InputSignup("JUnit", "Mockito", "mockito@email.com", TestUserUtils.createValidPlainPassoword(),
                 TestUserUtils.createValidCpf().getValue());
         var output = signup.execute(input);
