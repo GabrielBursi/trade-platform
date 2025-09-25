@@ -11,11 +11,10 @@ public class DespositUseCase {
     }
 
     public void execute(DepositInput input) {
-        User user = userRepository.findById(input.accountId());
-        if(user == null) {
-            throw new IllegalArgumentException("User not found");
-        }
+        User user = userRepository.findById(input.accountId())
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
         user.deposit(input.assetId(), input.quantity());
+        userRepository.update(user);
     }
 
 }

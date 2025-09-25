@@ -11,10 +11,9 @@ public class WithdrawUseCase {
     }
 
     public void execute(WithdrawInput input) {
-        User user = userRepository.findById(input.accountId());
-        if(user == null) {
-            throw new IllegalArgumentException("User not found");
-        }
+        User user = userRepository.findById(input.accountId())
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
         user.withdraw(input.assetId(), input.quantity());
+        userRepository.update(user);
     }
 }

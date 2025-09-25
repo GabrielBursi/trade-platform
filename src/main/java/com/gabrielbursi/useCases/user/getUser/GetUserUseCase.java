@@ -15,10 +15,8 @@ public class GetUserUseCase {
     }
 
     public GetUserOutput execute(GetUserInput input) {
-        User user = userRepository.findById(input.userId());
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
+        User user = userRepository.findById(input.userId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Map<String, BigDecimal> assets = user.getAssets().entrySet().stream()
                 .collect(Collectors.toMap(

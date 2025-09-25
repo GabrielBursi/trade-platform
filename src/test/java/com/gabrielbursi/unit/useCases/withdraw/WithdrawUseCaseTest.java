@@ -1,0 +1,60 @@
+package com.gabrielbursi.unit.useCases.withdraw;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import com.gabrielbursi.domain.user.User;
+import com.gabrielbursi.repository.user.UserRepository;
+import com.gabrielbursi.useCases.withdraw.WithdrawInput;
+import com.gabrielbursi.useCases.withdraw.WithdrawUseCase;
+
+class WithdrawUseCaseTest {
+
+    private UserRepository userRepository;
+    private WithdrawUseCase withdrawUseCase;
+
+    @BeforeEach
+    void setUp() {
+        userRepository = mock(UserRepository.class);
+        withdrawUseCase = new WithdrawUseCase(userRepository);
+    }
+
+    @Test
+    void shouldWithdrawWhenUserExists() {
+        String accountId = "acc123";
+        String assetId = "asset456";
+        BigDecimal quantity = new BigDecimal("10.0");
+        WithdrawInput input = mock(WithdrawInput.class);
+        when(input.accountId()).thenReturn(accountId);
+        when(input.assetId()).thenReturn(assetId);
+        when(input.quantity()).thenReturn(quantity);
+
+        User user = mock(User.class);
+        when(userRepository.findById(accountId)).thenReturn(Optional.of(user));
+
+        withdrawUseCase.execute(input);
+
+        verify(userRepository).findById(accountId);
+        verify(user).withdraw(assetId, quantity);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUserNotFound() {
+        String accountId = "acc123";
+        WithdrawInput input = mock(WithdrawInput.class);
+        when(input.accountId()).thenReturn(accountId);
+        when(userRepository.findById(accountId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> withdrawUseCase.execute(input))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("User not found");
+    }
+}
