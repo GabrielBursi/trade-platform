@@ -1,7 +1,9 @@
 package com.gabrielbursi.unit.useCases.user.signup;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -27,5 +29,17 @@ public class SignupTest {
         var output = signup.execute(input);
         assertNotNull(output.userId());
         assertDoesNotThrow(() -> UUID.fromString(output.userId()));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUserIsPresent() {
+        UserRepository userRepository = mock(UserRepository.class);
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(TestUserUtils.createValidUser()));
+        var signup = new SignupUseCase(userRepository);
+        var input = new InputSignup("JUnit", "Mockito", "mockito@email.com", TestUserUtils.createValidPlainPassoword(),
+                TestUserUtils.createValidCpf().getValue());
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> signup.execute(input));
+        assertEquals("User already exists", exception.getMessage());
     }
 }
