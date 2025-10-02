@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gabrielbursi.domain.user.vo.AssetId;
+import com.gabrielbursi.domain.shared.AssetId;
 import com.gabrielbursi.domain.user.vo.Cpf;
 import com.gabrielbursi.domain.user.vo.Email;
 import com.gabrielbursi.domain.user.vo.Name;

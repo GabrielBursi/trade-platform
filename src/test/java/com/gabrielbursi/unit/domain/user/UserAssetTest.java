@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 
+import com.gabrielbursi.domain.shared.AssetId;
 import com.gabrielbursi.domain.user.UserAsset;
-import com.gabrielbursi.domain.user.vo.AssetId;
 import com.gabrielbursi.domain.user.vo.Quantity;
 import com.gabrielbursi.domain.user.vo.UserId;
 
@@ -20,14 +20,14 @@ public class UserAssetTest {
     @Test
     void shouldCreateUserAssetWithValidValues() {
         UserId userId = UserId.newId();
-        String asset = AssetId.btc().getValue();
+        String asset = AssetId.btc().toString();
         BigDecimal quantity = BigDecimal.valueOf(2.5);
 
         UserAsset userAsset = UserAsset.create(userId, asset, quantity);
 
         assertNotNull(userAsset);
         assertEquals(userId, userAsset.getUserId());
-        assertEquals(asset, userAsset.getAssetId().getValue());
+        assertEquals(asset, userAsset.getAssetId().getValueString());
         assertEquals(quantity, userAsset.getQuantity().getValue());
     }
 
@@ -57,7 +57,7 @@ public class UserAssetTest {
     @Test
     void shouldUpdateQuantityImmutably() {
         UserId userId = UserId.newId();
-        UserAsset userAsset = UserAsset.create(userId, AssetId.btc().getValue(), BigDecimal.valueOf(2));
+        UserAsset userAsset = UserAsset.create(userId, AssetId.btc().toString(), BigDecimal.valueOf(2));
 
         UserAsset updated = userAsset.withUpdatedQuantity(Quantity.of(5));
 

@@ -2,7 +2,7 @@ package com.gabrielbursi.domain.user;
 
 import java.math.BigDecimal;
 
-import com.gabrielbursi.domain.user.vo.AssetId;
+import com.gabrielbursi.domain.shared.AssetId;
 import com.gabrielbursi.domain.user.vo.Quantity;
 import com.gabrielbursi.domain.user.vo.UserId;
 

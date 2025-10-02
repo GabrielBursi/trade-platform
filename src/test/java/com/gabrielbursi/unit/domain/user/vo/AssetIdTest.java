@@ -8,18 +8,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import com.gabrielbursi.domain.user.vo.AssetId;
+import com.gabrielbursi.domain.shared.AssetId;
 
 class AssetIdTest {
 
     @Test
     void shouldCreateValidAssetId() {
         AssetId btc = AssetId.btc();
-        assertEquals("BTC", btc.getValue());
+        assertEquals("BTC", btc.getValueString());
         assertEquals("BTC", btc.toString());
 
         AssetId usd = AssetId.usd();
-        assertEquals("USD", usd.getValue());
+        assertEquals("USD", usd.getValueString());
         assertEquals("USD", usd.toString());
     }
 

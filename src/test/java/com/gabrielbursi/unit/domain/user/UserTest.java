@@ -11,9 +11,9 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import com.gabrielbursi.domain.shared.AssetId;
 import com.gabrielbursi.domain.user.User;
 import com.gabrielbursi.domain.user.UserAsset;
-import com.gabrielbursi.domain.user.vo.AssetId;
 import com.gabrielbursi.domain.user.vo.Cpf;
 import com.gabrielbursi.domain.user.vo.Email;
 import com.gabrielbursi.domain.user.vo.Name;

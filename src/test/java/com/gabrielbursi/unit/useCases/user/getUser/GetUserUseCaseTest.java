@@ -15,9 +15,10 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.gabrielbursi.domain.shared.AssetId;
+import com.gabrielbursi.domain.shared.AssetIdEnum;
 import com.gabrielbursi.domain.user.User;
 import com.gabrielbursi.domain.user.UserAsset;
-import com.gabrielbursi.domain.user.vo.AssetId;
 import com.gabrielbursi.domain.user.vo.Cpf;
 import com.gabrielbursi.domain.user.vo.Email;
 import com.gabrielbursi.domain.user.vo.Name;
@@ -51,8 +52,8 @@ class GetUserUseCaseTest {
                 .cpf(Cpf.of(TestUserUtils.createValidCpf().getValue()))
                 .password(Password.fromPlain(TestUserUtils.createValidPlainPassoword()))
                 .assets(Map.of(
-                        AssetId.btc(), UserAsset.create(userId, "BTC", BigDecimal.TEN),
-                        AssetId.usd(), UserAsset.create(userId, "USD", BigDecimal.valueOf(100))))
+                        AssetId.btc(), UserAsset.create(userId, AssetId.btc().toString(), BigDecimal.TEN),
+                        AssetId.usd(), UserAsset.create(userId, AssetId.usd().toString(), BigDecimal.valueOf(100))))
                 .build();
 
         when(userRepository.findById(userId.getValue())).thenReturn(Optional.of(user));
@@ -67,8 +68,8 @@ class GetUserUseCaseTest {
         assertEquals("gabriel@email.com", output.email());
         assertEquals(TestUserUtils.createValidCpf().getValue(), output.cpf());
         assertEquals(2, output.assets().size());
-        assertEquals(0, BigDecimal.TEN.compareTo(output.assets().get("BTC")));
-        assertEquals(0, BigDecimal.valueOf(100).compareTo(output.assets().get("USD")));
+        assertEquals(0, BigDecimal.TEN.compareTo(output.assets().get(AssetIdEnum.BTC)));
+        assertEquals(0, BigDecimal.valueOf(100).compareTo(output.assets().get(AssetIdEnum.USD)));
     }
 
     @Test

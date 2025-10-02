@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.gabrielbursi.domain.shared.AssetIdEnum;
 import com.gabrielbursi.domain.user.User;
 import com.gabrielbursi.repository.user.UserRepository;
 
@@ -18,7 +19,7 @@ public class GetUserUseCase {
         User user = userRepository.findById(input.userId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Map<String, BigDecimal> assets = user.getAssets().entrySet().stream()
+        Map<AssetIdEnum, BigDecimal> assets = user.getAssets().entrySet().stream()
                 .collect(Collectors.toMap(
                         entry -> entry.getKey().getValue(),
                         entry -> entry.getValue().getQuantity().getValue()));

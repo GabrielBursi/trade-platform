@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.gabrielbursi.domain.user.vo.AssetId;
+import com.gabrielbursi.domain.shared.AssetIdEnum;
 import com.gabrielbursi.repository.user.UserRepositoryFake;
 import com.gabrielbursi.unit.domain.user.TestUserUtils;
 import com.gabrielbursi.useCases.deposit.DepositInput;
@@ -72,14 +72,14 @@ public class UserUseCasesIntegrationTest {
                 TestUserUtils.createValidCpf().getValue());
         OutputSignup signupOutput = signupUseCase.execute(signupInput);
 
-        DepositInput depositInput = new DepositInput(signupOutput.userId(), "BTC", BigDecimal.TEN);
+        DepositInput depositInput = new DepositInput(signupOutput.userId(), AssetIdEnum.BTC.toString(), BigDecimal.TEN);
         despositUseCase.execute(depositInput);
 
         GetUserInput getInput = new GetUserInput(signupOutput.userId());
         GetUserOutput getOutput = getUserUseCase.execute(getInput);
 
         assertEquals(1, getOutput.assets().size());
-        assertEquals(0, BigDecimal.TEN.compareTo(getOutput.assets().get("BTC")));
+        assertEquals(0, BigDecimal.TEN.compareTo(getOutput.assets().get(AssetIdEnum.BTC)));
     }
 
     @Test
@@ -92,17 +92,19 @@ public class UserUseCasesIntegrationTest {
                 TestUserUtils.createValidCpf().getValue());
         OutputSignup signupOutput = signupUseCase.execute(signupInput);
 
-        DepositInput depositInput = new DepositInput(signupOutput.userId(), AssetId.BTC, BigDecimal.valueOf(10));
+        DepositInput depositInput = new DepositInput(signupOutput.userId(), AssetIdEnum.BTC.toString(),
+                BigDecimal.valueOf(10));
         despositUseCase.execute(depositInput);
 
-        WithdrawInput withdrawInput = new WithdrawInput(signupOutput.userId(), AssetId.BTC, BigDecimal.valueOf(3));
+        WithdrawInput withdrawInput = new WithdrawInput(signupOutput.userId(), AssetIdEnum.BTC.toString(),
+                BigDecimal.valueOf(3));
         withdrawUseCase.execute(withdrawInput);
 
         GetUserInput getInput = new GetUserInput(signupOutput.userId());
         GetUserOutput getOutput = getUserUseCase.execute(getInput);
 
         assertEquals(1, getOutput.assets().size());
-        assertEquals(0, BigDecimal.valueOf(7).compareTo(getOutput.assets().get(AssetId.BTC)));
+        assertEquals(0, BigDecimal.valueOf(7).compareTo(getOutput.assets().get(AssetIdEnum.BTC)));
     }
 
     @Test
